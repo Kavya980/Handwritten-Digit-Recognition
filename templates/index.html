@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Handwritten Digit Recognition</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        .container {
+            background: white;
+            width: 500px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        canvas {
+            background-color: black;
+            border: 3px solid #333;
+            border-radius: 10px;
+            cursor: crosshair;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>Handwritten Digit Recognition</h1>
+
+    <p>Draw a digit from 0 to 9</p>
+
+    <canvas
+        id="canvas"
+        width="280"
+        height="280">
+    </canvas>
+
+    <br>
+
+    <button onclick="clearCanvas()">
+        Clear
+    </button>
+
+    <button onclick="predictDigit()">
+        Predict Digit
+    </button>
+
+    <div class="result" id="result"></div>
+
+</div>
+
+
+<script>
+
+    const canvas =
+        document.getElementById("canvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    // Black background
+    ctx.fillStyle = "black";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    // White brush
+    ctx.strokeStyle = "white";
+
+    ctx.lineWidth = 20;
+
+    ctx.lineCap = "round";
+
+
+    let drawing = false;
+
+
+    canvas.addEventListener(
+        "mousedown",
+        function(e) {
+
+            drawing = true;
+
+            draw(e);
+
+        }
+    );
+
+
+    canvas.addEventListener(
+        "mouseup",
+        function() {
+
+            drawing = false;
+
+            ctx.beginPath();
+
+        }
+    );
+
+
+    canvas.addEventListener(
+        "mousemove",
+        draw
+    );
+
+
+    function draw(e) {
+
+        if (!drawing)
+            return;
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+        ctx.lineTo(
+            e.clientX - rect.left,
+            e.clientY - rect.top
+        );
+
+        ctx.stroke();
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            e.clientX - rect.left,
+            e.clientY - rect.top
+        );
+
+    }
+
+
+    function clearCanvas() {
+
+        ctx.fillStyle = "black";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        document.getElementById(
+            "result"
+        ).innerHTML = "";
+
+    }
+
+
+    function predictDigit() {
+
+    const imageData = canvas.toDataURL("image/png");
+
+    document.getElementById("result").innerHTML =
+        "Predicting...";
+
+    fetch("/predict", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            image: imageData
+        })
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        document.getElementById("result").innerHTML =
+            "Predicted Digit: " + data.prediction;
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        document.getElementById("result").innerHTML =
+            "Something went wrong!";
+
+    });
+}
+
+</script>
+
+</body>
+
+</html>
