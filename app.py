@@ -17,6 +17,9 @@ model = joblib.load("digit_model.pkl")
 def home():
     return render_template("index.html")
 
+@app.route("/recognize")
+def recognize():
+    return render_template("recognize.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():

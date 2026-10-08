@@ -1,0 +1,795 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DigitVision | Recognize</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    #ffd9e9,
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 20%,
+                    #d8e5ff,
+                    transparent 30%
+                ),
+
+                #f8f7ff;
+
+            color: #292742;
+        }
+
+
+        /* NAVBAR */
+
+        nav {
+
+            padding: 18px 8%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background:
+                rgba(255,255,255,0.78);
+
+            backdrop-filter: blur(10px);
+
+            border-bottom:
+                1px solid #eeeafa;
+        }
+
+
+        .logo {
+
+            font-size: 23px;
+
+            font-weight: 800;
+
+            color: #6255cf;
+        }
+
+
+        .logo span {
+            color: #ef72a4;
+        }
+
+
+        .back {
+
+            text-decoration: none;
+
+            color: #6d6a7d;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .back:hover {
+            color: #6255cf;
+        }
+
+
+        /* MAIN */
+
+        .main {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            padding:
+                45px 25px 70px;
+
+            text-align: center;
+        }
+
+
+        .tag {
+
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            border-radius: 30px;
+
+            background: #eeeaff;
+
+            color: #6255cf;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 14px;
+        }
+
+
+        h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+
+            color: #858394;
+
+            font-size: 14px;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* WORKSPACE */
+
+        .workspace {
+
+            background:
+                rgba(255,255,255,0.9);
+
+            border:
+                1px solid #eeeafa;
+
+            border-radius: 25px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 20px 55px
+                rgba(75,65,150,0.13);
+        }
+
+
+        .canvas-wrapper {
+
+            display: inline-block;
+
+            padding: 8px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #786ce5,
+                    #65bde9
+                );
+
+            box-shadow:
+                0 12px 30px
+                rgba(91,83,180,0.2);
+        }
+
+
+        canvas {
+
+            display: block;
+
+            width: 280px;
+
+            height: 280px;
+
+            background: #151522;
+
+            border-radius: 14px;
+
+            cursor: crosshair;
+
+            touch-action: none;
+        }
+
+
+        .hint {
+
+            margin-top: 15px;
+
+            color: #9290a0;
+
+            font-size: 13px;
+        }
+
+
+        /* BUTTONS */
+
+        .buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-top: 22px;
+        }
+
+
+        button {
+
+            border: none;
+
+            padding: 12px 23px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .clear-btn {
+
+            background: #eeeef5;
+
+            color: #5d5a6e;
+        }
+
+
+        .clear-btn:hover {
+
+            background: #e2e1eb;
+
+            transform: translateY(-2px);
+        }
+
+
+        .predict-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6c5ce7,
+                    #4e9fe5
+                );
+
+            color: white;
+
+            box-shadow:
+                0 8px 20px
+                rgba(92,89,210,0.25);
+        }
+
+
+        .predict-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(92,89,210,0.32);
+        }
+
+
+        /* RESULT */
+
+        .result-box {
+
+            margin-top: 25px;
+
+            min-height: 100px;
+
+            border-radius: 18px;
+
+            background: #f8f7ff;
+
+            border: 1px solid #e9e6ff;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .result-label {
+
+            color: #8d8a9d;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.3px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .result {
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            color: #5e51ca;
+        }
+
+
+        /* INFO */
+
+        .info {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .info-item {
+
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            background: #f0effa;
+
+            color: #69667c;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        footer {
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: #9693a5;
+
+            font-size: 12px;
+        }
+
+
+        footer span {
+
+            color: #6659d4;
+
+            font-weight: 700;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            .workspace {
+                padding: 20px 15px;
+            }
+
+            canvas {
+                width: 250px;
+                height: 250px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav>
+
+    <div class="logo">
+        Digit<span>Vision</span>
+    </div>
+
+
+    <a
+        href="/"
+        class="back">
+
+        ← Back to Home
+
+    </a>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <div class="tag">
+        ✍️ Digit Recognition
+    </div>
+
+
+    <h1>
+        Draw a Digit
+    </h1>
+
+
+    <p class="subtitle">
+
+        Draw any number from 0 to 9 inside the box
+        and let our model recognize it.
+
+    </p>
+
+
+    <div class="workspace">
+
+
+        <!-- CANVAS -->
+
+        <div class="canvas-wrapper">
+
+            <canvas
+                id="canvas"
+                width="280"
+                height="280">
+            </canvas>
+
+        </div>
+
+
+        <p class="hint">
+
+            ✦ Use your mouse to draw clearly
+
+        </p>
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <button
+                class="clear-btn"
+                onclick="clearCanvas()">
+
+                Clear
+
+            </button>
+
+
+            <button
+                class="predict-btn"
+                onclick="predictDigit()">
+
+                ✨ Predict Digit
+
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="result-box">
+
+            <div class="result-label">
+                Model Prediction
+            </div>
+
+
+            <div
+                class="result"
+                id="result">
+
+                Draw something!
+
+            </div>
+
+        </div>
+
+
+        <!-- MODEL INFO -->
+
+        <div class="info">
+
+            <div class="info-item">
+                🧠 SVM Model
+            </div>
+
+            <div class="info-item">
+                📚 MNIST Dataset
+            </div>
+
+            <div class="info-item">
+                🔢 Digits 0–9
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    Handwritten Digit Recognition
+    • <span>MNIST + SVM</span>
+
+</footer>
+
+
+
+<script>
+
+
+    const canvas =
+        document.getElementById("canvas");
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /* Initial background */
+
+    ctx.fillStyle = "#151522";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* Drawing settings */
+
+    ctx.strokeStyle = "#ffffff";
+
+    ctx.lineWidth = 20;
+
+    ctx.lineCap = "round";
+
+    ctx.lineJoin = "round";
+
+
+    let drawing = false;
+
+
+    /* ==========================
+       MOUSE EVENTS
+       ========================== */
+
+
+    canvas.addEventListener(
+        "mousedown",
+        function(e) {
+
+            drawing = true;
+
+            draw(e);
+
+        }
+    );
+
+
+    canvas.addEventListener(
+        "mouseup",
+        stopDrawing
+    );
+
+
+    canvas.addEventListener(
+        "mouseleave",
+        stopDrawing
+    );
+
+
+    canvas.addEventListener(
+        "mousemove",
+        draw
+    );
+
+
+    function stopDrawing() {
+
+        drawing = false;
+
+        ctx.beginPath();
+
+    }
+
+
+    function draw(e) {
+
+        if (!drawing)
+            return;
+
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        const x =
+            (e.clientX - rect.left)
+            *
+            (canvas.width / rect.width);
+
+
+        const y =
+            (e.clientY - rect.top)
+            *
+            (canvas.height / rect.height);
+
+
+        ctx.lineTo(x, y);
+
+        ctx.stroke();
+
+        ctx.beginPath();
+
+        ctx.moveTo(x, y);
+
+    }
+
+
+    /* ==========================
+       CLEAR
+       ========================== */
+
+
+    function clearCanvas() {
+
+        ctx.fillStyle = "#151522";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        document.getElementById(
+            "result"
+        ).innerHTML =
+            "Draw something!";
+
+    }
+
+
+    /* ==========================
+       PREDICT
+       ========================== */
+
+
+    function predictDigit() {
+
+
+        const imageData =
+            canvas.toDataURL("image/png");
+
+
+        document.getElementById(
+            "result"
+        ).innerHTML =
+            "✨ Thinking...";
+
+
+        fetch(
+            "/predict",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    image: imageData
+
+                })
+
+            }
+        )
+
+
+        .then(
+            response =>
+                response.json()
+        )
+
+
+        .then(
+            data => {
+
+                document.getElementById(
+                    "result"
+                ).innerHTML =
+                    "Digit " +
+                    data.prediction;
+
+            }
+        )
+
+
+        .catch(
+            error => {
+
+                console.error(error);
+
+                document.getElementById(
+                    "result"
+                ).innerHTML =
+                    "Something went wrong";
+
+            }
+        );
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
+```

@@ -1,57 +1,367 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Handwritten Digit Recognition</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DigitVision | Home</title>
 
     <style>
 
-        body {
-            font-family: Arial;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding-top: 40px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        .container {
-            background: white;
-            width: 500px;
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 10% 10%, #ffd6e7, transparent 30%),
+                radial-gradient(circle at 90% 20%, #d7e4ff, transparent 30%),
+                radial-gradient(circle at 50% 100%, #d8f8e8, transparent 30%),
+                #f8f7ff;
+
+            color: #292742;
+        }
+
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            padding: 18px 8%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(10px);
+
+            border-bottom: 1px solid #eeeafa;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #6255cf;
+        }
+
+        .logo span {
+            color: #ef72a4;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #66647a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #6255cf;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            max-width: 1050px;
             margin: auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px gray;
+
+            min-height: 510px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 50px;
+            padding: 65px 30px;
+        }
+
+        .hero-text {
+            max-width: 570px;
+        }
+
+        .tag {
+            display: inline-block;
+
+            padding: 8px 15px;
+            border-radius: 30px;
+
+            background: #eeeaff;
+            color: #6255cf;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
         }
 
         h1 {
-            color: #333;
+            font-size: 48px;
+            line-height: 1.1;
+
+            margin-bottom: 20px;
         }
 
-        canvas {
-            background-color: black;
-            border: 3px solid #333;
-            border-radius: 10px;
-            cursor: crosshair;
+        h1 span {
+            color: #6659d4;
         }
 
-        button {
-            padding: 12px 25px;
-            margin: 10px;
-            background-color: #333;
+        .hero-text p {
+            color: #77758a;
+            line-height: 1.7;
+            font-size: 16px;
+
+            margin-bottom: 28px;
+        }
+
+        .start-btn {
+            display: inline-block;
+
+            padding: 14px 26px;
+
+            border-radius: 13px;
+
+            background: linear-gradient(
+                135deg,
+                #6d5ce7,
+                #4ba8df
+            );
+
             color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            text-decoration: none;
+
+            font-weight: 700;
+            font-size: 14px;
+
+            box-shadow: 0 10px 25px rgba(99,88,210,0.25);
+
+            transition: 0.2s;
         }
 
-        button:hover {
-            background-color: #555;
+        .start-btn:hover {
+            transform: translateY(-3px);
         }
 
-        .result {
-            margin-top: 20px;
-            font-size: 28px;
-            font-weight: bold;
+
+        /* DIGIT CARD */
+
+        .digit-card {
+            width: 300px;
+            height: 300px;
+
+            border-radius: 35px;
+
+            background: white;
+
+            box-shadow:
+                0 20px 55px rgba(75,65,150,0.16);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+        }
+
+        .digit {
+            font-size: 145px;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #705fe0,
+                    #ed78a8
+                );
+
+            -webkit-background-clip: text;
+            color: transparent;
+
+            transform: rotate(-7deg);
+        }
+
+        .small-bubble {
+            position: absolute;
+
+            padding: 9px 13px;
+
+            background: #fff2f7;
+
+            color: #d75d91;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .bubble-one {
+            top: 25px;
+            right: -20px;
+        }
+
+        .bubble-two {
+            bottom: 30px;
+            left: -20px;
+
+            background: #edf9f4;
+            color: #4d9d79;
+        }
+
+
+        /* FEATURES */
+
+        .section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 30px 70px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .section-title h2 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            color: #888698;
+            font-size: 14px;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.85);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            border: 1px solid #eeeafa;
+
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(80,70,140,0.1);
+        }
+
+        .icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: #eeeaff;
+
+            font-size: 22px;
+
+            margin-bottom: 15px;
+        }
+
+        .card:nth-child(2) .icon {
+            background: #fff0f5;
+        }
+
+        .card:nth-child(3) .icon {
+            background: #eaf8f2;
+        }
+
+        .card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #858394;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+
+            padding: 22px;
+
+            color: #9693a5;
+
+            font-size: 12px;
+
+            border-top: 1px solid #eeeafa;
+        }
+
+        footer span {
+            color: #6659d4;
+            font-weight: 700;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 750px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 38px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .digit-card {
+                width: 250px;
+                height: 250px;
+            }
+
+            .digit {
+                font-size: 120px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
         }
 
     </style>
@@ -61,177 +371,173 @@
 
 <body>
 
-<div class="container">
 
-    <h1>Handwritten Digit Recognition</h1>
+<!-- NAVBAR -->
 
-    <p>Draw a digit from 0 to 9</p>
+<nav>
 
-    <canvas
-        id="canvas"
-        width="280"
-        height="280">
-    </canvas>
+    <div class="logo">
+        Digit<span>Vision</span>
+    </div>
 
-    <br>
+    <div class="nav-links">
 
-    <button onclick="clearCanvas()">
-        Clear
-    </button>
+        <a href="/">Home</a>
 
-    <button onclick="predictDigit()">
-        Predict Digit
-    </button>
+        <a href="/recognize">
+            Recognize Digit
+        </a>
 
-    <div class="result" id="result"></div>
+    </div>
 
-</div>
+</nav>
 
 
-<script>
+<!-- HERO -->
 
-    const canvas =
-        document.getElementById("canvas");
+<section class="hero">
 
-    const ctx =
-        canvas.getContext("2d");
 
+    <div class="hero-text">
 
-    // Black background
-    ctx.fillStyle = "black";
+        <div class="tag">
+            ✨ Machine Learning Project
+        </div>
 
-    ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
 
+        <h1>
+            Turn your handwriting
+            into a <span>digit.</span>
+        </h1>
 
-    // White brush
-    ctx.strokeStyle = "white";
 
-    ctx.lineWidth = 20;
+        <p>
+            A simple handwritten digit recognition system
+            that uses the MNIST dataset and an SVM machine
+            learning model to identify digits from 0 to 9.
+        </p>
 
-    ctx.lineCap = "round";
 
+        <a
+            href="/recognize"
+            class="start-btn">
 
-    let drawing = false;
+            ✍️ Start Recognizing
 
+        </a>
 
-    canvas.addEventListener(
-        "mousedown",
-        function(e) {
+    </div>
 
-            drawing = true;
 
-            draw(e);
+    <div class="digit-card">
 
-        }
-    );
+        <div class="digit">
+            8
+        </div>
 
+        <div class="small-bubble bubble-one">
+            MNIST
+        </div>
 
-    canvas.addEventListener(
-        "mouseup",
-        function() {
+        <div class="small-bubble bubble-two">
+            SVM Model
+        </div>
 
-            drawing = false;
+    </div>
 
-            ctx.beginPath();
 
-        }
-    );
+</section>
 
 
-    canvas.addEventListener(
-        "mousemove",
-        draw
-    );
+<!-- FEATURES -->
 
+<section class="section">
 
-    function draw(e) {
 
-        if (!drawing)
-            return;
+    <div class="section-title">
 
-        const rect =
-            canvas.getBoundingClientRect();
+        <h2>
+            How does it work?
+        </h2>
 
-        ctx.lineTo(
-            e.clientX - rect.left,
-            e.clientY - rect.top
-        );
+        <p>
+            Three simple steps behind the recognition system
+        </p>
 
-        ctx.stroke();
+    </div>
 
-        ctx.beginPath();
 
-        ctx.moveTo(
-            e.clientX - rect.left,
-            e.clientY - rect.top
-        );
+    <div class="cards">
 
-    }
 
+        <div class="card">
 
-    function clearCanvas() {
+            <div class="icon">
+                🖊️
+            </div>
 
-        ctx.fillStyle = "black";
+            <h3>
+                Draw
+            </h3>
 
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+            <p>
+                Draw any handwritten digit from
+                0 to 9 using the drawing area.
+            </p>
 
-        document.getElementById(
-            "result"
-        ).innerHTML = "";
+        </div>
 
-    }
 
+        <div class="card">
 
-    function predictDigit() {
+            <div class="icon">
+                🧠
+            </div>
 
-    const imageData = canvas.toDataURL("image/png");
+            <h3>
+                Process
+            </h3>
 
-    document.getElementById("result").innerHTML =
-        "Predicting...";
+            <p>
+                The image is converted into a
+                format similar to the MNIST dataset.
+            </p>
 
-    fetch("/predict", {
-        method: "POST",
+        </div>
 
-        headers: {
-            "Content-Type": "application/json"
-        },
 
-        body: JSON.stringify({
-            image: imageData
-        })
-    })
+        <div class="card">
 
-    .then(response => response.json())
+            <div class="icon">
+                🎯
+            </div>
 
-    .then(data => {
+            <h3>
+                Predict
+            </h3>
 
-        document.getElementById("result").innerHTML =
-            "Predicted Digit: " + data.prediction;
+            <p>
+                The trained SVM model analyzes the
+                image and predicts the handwritten digit.
+            </p>
 
-    })
+        </div>
 
-    .catch(error => {
 
-        console.error(error);
+    </div>
 
-        document.getElementById("result").innerHTML =
-            "Something went wrong!";
+</section>
 
-    });
-}
 
-</script>
+<footer>
+
+    Handwritten Digit Recognition
+    • <span>MNIST + SVM</span>
+
+</footer>
+
 
 </body>
 
 </html>
+
